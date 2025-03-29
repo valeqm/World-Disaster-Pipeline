@@ -18,7 +18,7 @@ SELECT
     COALESCE(Event_Name, 'No Event Name') AS event_name,
     ISO AS iso_code,
     Country AS country,
-    Región AS region,
+    Region AS region,
     COALESCE(Location, 'Location Not Specified') AS location,
     
     -- Date Info
