@@ -12,3 +12,7 @@ models:
       The disaster fact table stores quantitative impact data for 
       each disaster, such as the number of affected people, 
       total damages, insured losses, and reconstruction costs.
+
+  - name: join_disaster
+    description: >
+      Join two tables
