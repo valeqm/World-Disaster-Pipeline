@@ -51,7 +51,7 @@ SELECT
         WHEN total_affected IS NULL OR total_affected = 0 
         THEN NULL
         ELSE (total_deaths / total_affected) * 1000
-    END AS mortality_ratio
+    END AS mortality_ratio,
 
     -- Estimated inflation percentage for total damage  
     CASE  
@@ -72,7 +72,7 @@ SELECT
         WHEN reconstruction_costs_usd IS NULL OR reconstruction_costs_usd = 0 OR reconstruction_costs_adjusted_usd IS NULL  
         THEN NULL  
         ELSE ((reconstruction_costs_adjusted_usd / reconstruction_costs_usd) - 1) * 100  
-    END AS reconstruction_costs_inflation_percentage,
+    END AS reconstruction_costs_inflation_percentage
 
 
 FROM stg_disaster;

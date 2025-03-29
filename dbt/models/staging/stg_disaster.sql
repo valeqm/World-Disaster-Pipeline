@@ -15,8 +15,8 @@ SELECT
     Disaster_Subgroup AS disaster_subgroup,
     Disaster_Type AS disaster_type,
     Disaster_Subtype AS disaster_subtype,
-    COALESCE(Event_Name, 'No Event Name') AS event_name
-    ISO AS iso_code
+    COALESCE(Event_Name, 'No Event Name') AS event_name,
+    ISO AS iso_code,
     Country AS country,
     Región AS region,
     COALESCE(Location, 'Location Not Specified') AS location,
@@ -43,7 +43,7 @@ SELECT
     ROUND(CAST(NULLIF(insured_damage_adjusted_usd, '') AS NUMERIC), 2) AS insured_damage_adjusted_usd,
     ROUND(CAST(NULLIF(reconstruction_costs_usd, '') AS NUMERIC), 2) AS reconstruction_costs_usd,
     ROUND(CAST(NULLIF(reconstruction_costs_adjusted_usd, '') AS NUMERIC), 2) AS reconstruction_costs_adjusted_usd,
-    ROUND(CAST(NULLIF(aid_contribution_usd, '') AS NUMERIC), 2) AS aid_contribution_usd
+    ROUND(CAST(NULLIF(aid_contribution_usd, '') AS NUMERIC), 2) AS aid_contribution_usd,
 
     -- Magnitude Info
     ROUND(CAST(NULLIF(Magnitude, '') AS NUMERIC), 2) AS magnitude,
