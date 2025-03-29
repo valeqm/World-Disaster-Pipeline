@@ -27,7 +27,7 @@ SELECT
     COALESCE(Start_Day, 'Day Not Specified') AS start_day,
     COALESCE(End_Year, 'Year Not Specified') AS end_year,
     COALESCE(End_Month, 'Month Not Specified') AS end_month,
-    COALESCE(End_Day, 'Day Not Specified') AS end_day
+    COALESCE(End_Day, 'Day Not Specified') AS end_day,
     
     -- Affected Info
     CAST(NULLIF(Total_Deaths, '') AS INT) AS total_deaths,
