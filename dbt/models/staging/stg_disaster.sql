@@ -30,23 +30,23 @@ SELECT
     End_Day AS end_day,
 
     -- Affected Info
-    CAST(NULLIF(Total_Deaths, '') AS INT) AS total_deaths,
-    CAST(NULLIF(No__Injured, '') AS INT) AS no_injured,
-    CAST(NULLIF(No__Affected, '') AS INT) AS no_affected,
-    CAST(NULLIF(No__Homeless, '') AS INT) AS no_homeless,
-    CAST(NULLIF(Total_Affected, '') AS INT) AS total_affected,
+    CAST(Total_Deaths AS INT) AS total_deaths,
+    CAST(No__Injured AS INT) AS no_injured,
+    CAST(No__Affected AS INT) AS no_affected,
+    CAST(No__Homeless AS INT) AS no_homeless,
+    CAST(Total_Affected AS INT) AS total_affected,
 
     -- Financial Values Info
-    ROUND(CAST(NULLIF(total_damage_usd, '') AS NUMERIC), 2) AS total_damage_usd,
-    ROUND(CAST(NULLIF(total_damage_adjusted_usd, '') AS NUMERIC), 2) AS total_damage_adjusted_usd,
-    ROUND(CAST(NULLIF(insured_damage_usd, '') AS NUMERIC), 2) AS insured_damage_usd,
-    ROUND(CAST(NULLIF(insured_damage_adjusted_usd, '') AS NUMERIC), 2) AS insured_damage_adjusted_usd,
-    ROUND(CAST(NULLIF(reconstruction_costs_usd, '') AS NUMERIC), 2) AS reconstruction_costs_usd,
-    ROUND(CAST(NULLIF(reconstruction_costs_adjusted_usd, '') AS NUMERIC), 2) AS reconstruction_costs_adjusted_usd,
-    ROUND(CAST(NULLIF(aid_contribution_usd, '') AS NUMERIC), 2) AS aid_contribution_usd,
+    ROUND(CAST(total_damage_usd AS NUMERIC), 2) AS total_damage_usd,
+    ROUND(CAST(total_damage_adjusted_usd AS NUMERIC), 2) AS total_damage_adjusted_usd,
+    ROUND(CAST(insured_damage_usd AS NUMERIC), 2) AS insured_damage_usd,
+    ROUND(CAST(insured_damage_adjusted_usd AS NUMERIC), 2) AS insured_damage_adjusted_usd,
+    ROUND(CAST(reconstruction_costs_usd AS NUMERIC), 2) AS reconstruction_costs_usd,
+    ROUND(CAST(reconstruction_costs_adjusted_usd AS NUMERIC), 2) AS reconstruction_costs_adjusted_usd,
+    ROUND(CAST(aid_contribution_usd AS NUMERIC), 2) AS aid_contribution_usd,
 
     -- Magnitude Info
-    ROUND(CAST(NULLIF(Magnitude, '') AS NUMERIC), 2) AS magnitude,
+    ROUND(CAST(Magnitude AS NUMERIC), 2) AS no_magnitude,
     Magnitude_Scale AS magnitude_scale
 
 
