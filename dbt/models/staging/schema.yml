@@ -9,7 +9,7 @@ sources:
       - name: partitioned_cluster_disaster_data
 
 models:
-    - name: stg_disaster_data
+    - name: stg_disaster
       description: >
         Records of disasters worldwide, categorized by type, impact, and location.  
         Data includes details on damages, casualties, and financial losses,  
