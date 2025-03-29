@@ -27,7 +27,7 @@ SELECT
     Start_Day AS start_day,
     End_Year AS end_year,
     End_Month AS end_month,
-    End_Day AS end_day
+    End_Day AS end_day,
 
     -- Affected Info
     CAST(NULLIF(Total_Deaths, '') AS INT) AS total_deaths,
