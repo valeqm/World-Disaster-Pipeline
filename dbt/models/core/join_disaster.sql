@@ -16,4 +16,4 @@ SELECT
     f.*
 FROM dim_disaster d
 LEFT JOIN fact_disaster f
-ON d.disaster_id = f.disaster_id
+ON d.id_disaster = f.id_disaster
