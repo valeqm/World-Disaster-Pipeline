@@ -1,0 +1,84 @@
+version: 2
+
+sources:
+  - name: staging
+    database: "{{ env_var('DBT_DATABASE', 'woven-nova-447816-e0') }}"
+    schema: "{{ env_var('DBT_SCHEMA', 'world_disaster_dataset') }}"
+
+    tables:
+      - name: partitioned_cluster_disaster_data
+
+models:
+    - name: stg_disaster_data
+      description: >
+        Records of disasters worldwide, categorized by type, impact, and location.  
+        Data includes details on damages, casualties, and financial losses,  
+        collected from various sources to support global disaster analysis  
+        and response planning.  
+      columns:
+          - name: id_disaster
+            description: Primary key for this table
+            tests:
+                - unique:
+                    severity: warn
+                - not_null:
+                    severity: warn
+          - name: Disaster_Group
+            description: "General classification of the disaster event (e.g., Natural, Technological)."
+          - name: Disaster_Subgroup
+            description: "Subcategory of the disaster group (e.g., Meteorological, Geological)."
+          - name: Disaster_Type
+            description: "Specific type of disaster (e.g., Flood, Earthquake)."
+          - name: Disaster_Subtype
+            description: "More detailed categorization of the disaster type."
+          - name: Event_Name
+            description: "Name or title given to the disaster event."
+          - name: ISO
+            description: "ISO country code where the disaster occurred."
+          - name: Country
+            description: "Name of the country where the disaster occurred."
+          - name: Region
+            description: "Continent or large geographical division where the country is located."
+          - name: Location
+            description: "Specific location or area affected by the disaster."
+          - name: Magnitude
+            description: "Intensity or magnitude measurement of the disaster event, if applicable."
+          - name: Magnitude_Scale
+            description: "Unit of measurement used for magnitude (e.g., Richter scale for earthquakes)."
+          - name: Start_Year
+            description: "Year when the disaster event started."
+          - name: Start_Month
+            description: "Month when the disaster event started."
+          - name: Start_Day
+            description: "Day when the disaster event started."
+          - name: End_Year
+            description: "Year when the disaster event ended."
+          - name: End_Month
+            description: "Month when the disaster event ended."
+          - name: End_Day
+            description: "Day when the disaster event ended."
+          - name: Total_Deaths
+            description: "Total number of reported deaths caused by the disaster event."
+          - name: No__Injured
+            description: "Total number of people reported as injured due to the disaster."
+          - name: No__Affected
+            description: "Total number of people affected by the disaster event."
+          - name: No__Homeless
+            description: "Total number of people left homeless due to the disaster."
+          - name: Total_Affected
+            description: "Sum of all affected individuals, including injured, displaced, and indirectly affected."
+          - name: total_damage_usd
+            description: "Estimated total economic damage in USD."
+          - name: total_damage_adjusted_usd
+            description: "Total economic damage adjusted for inflation in USD."
+          - name: insured_damage_usd
+            description: "Total insured damage in USD."
+          - name: insured_damage_adjusted_usd
+            description: "Insured damage adjusted for inflation in USD."
+          - name: reconstruction_costs_usd
+            description: "Estimated reconstruction costs in USD."
+          - name: reconstruction_costs_adjusted_usd
+            description: "Reconstruction costs adjusted for inflation in USD."
+          - name: aid_contribution_usd
+            description: "Total aid contributions received for disaster recovery in USD."
+

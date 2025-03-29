@@ -1,0 +1,14 @@
+version: 2
+
+models:
+  - name: dim_disaster
+    description: >
+      The disaster dimension table contains descriptive attributes 
+      related to each disaster event, including its classification, 
+      type, name, affected region, and magnitude details.
+
+  - name: fact_disaster
+    description: >
+      The disaster fact table stores quantitative impact data for 
+      each disaster, such as the number of affected people, 
+      total damages, insured losses, and reconstruction costs.
