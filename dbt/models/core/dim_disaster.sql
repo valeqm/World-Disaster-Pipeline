@@ -51,4 +51,4 @@ SELECT
         ELSE 'Uncategorized'
     END AS magnitude_category
 
-FROM stg_disaster;
+FROM stg_disaster

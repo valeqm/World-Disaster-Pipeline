@@ -9,7 +9,6 @@ WITH stg_disaster AS (
 )
 
 SELECT
-SELECT
     id_disaster,
     total_deaths,
     no_injured,
@@ -75,4 +74,4 @@ SELECT
     END AS reconstruction_costs_inflation_percentage
 
 
-FROM stg_disaster;
+FROM stg_disaster
