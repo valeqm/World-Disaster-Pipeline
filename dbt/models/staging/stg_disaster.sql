@@ -23,12 +23,12 @@ SELECT
     
     -- Date Info
     Start_Year AS start_year,
-    COALESCE(Start_Month, 'Month Not Specified') AS start_month,
-    COALESCE(Start_Day, 'Day Not Specified') AS start_day,
-    COALESCE(End_Year, 'Year Not Specified') AS end_year,
-    COALESCE(End_Month, 'Month Not Specified') AS end_month,
-    COALESCE(End_Day, 'Day Not Specified') AS end_day,
-    
+    Start_Month AS start_month,
+    Start_Day AS start_day,
+    End_Year AS end_year,
+    End_Month AS end_month,
+    End_Day AS end_day
+
     -- Affected Info
     CAST(NULLIF(Total_Deaths, '') AS INT) AS total_deaths,
     CAST(NULLIF(No__Injured, '') AS INT) AS no_injured,
