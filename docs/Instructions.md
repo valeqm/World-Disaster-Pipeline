@@ -34,7 +34,7 @@ cd World-Disaster-Pipeline
 
 ## 5. Update Configuration Files
 Modify the following files with your project-specific values:
-- [`.env`](.env)
+- [`.env`](../.env)
 - [`variables.tf`](/terraform/variables.tf)
 
 ## 6. Run the Makefile
