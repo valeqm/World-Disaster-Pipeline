@@ -43,4 +43,4 @@ View the Looker Studio dashboard [here](https://lookerstudio.google.com/reportin
 
 ## Setup & Reproduction
 
-To replicate this project, follow these [instructions](docs/instructions.md).
+To replicate this project, follow these [instructions](docs/Instructions.md).
