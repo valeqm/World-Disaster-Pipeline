@@ -1,5 +1,7 @@
 docker compose up -d
 
+# Wait for Kestra to start running before executing the next step
+
 python entrypoint.py
 
 cd terraform
