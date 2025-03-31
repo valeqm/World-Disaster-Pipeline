@@ -1,0 +1,74 @@
+id: 02_gcp_bq
+namespace: world_disaster
+description: |
+  Pipeline to ingest and transform data from Google Cloud Storage to BigQuery
+
+variables:
+  file: "public_emdat_incl_hist.xlsx"
+  csv_file: "public_emdat_incl_hist.csv"
+  gcs_file: "gs://{{kv('GCP_BUCKET_NAME')}}/public_emdat_incl_hist.csv"
+  table: "{{kv('GCP_DATASET')}}.disaster_data_{{execution.startDate | date('yyyy_MM')}}"
+
+tasks:
+  - id: bq_disaster_table_ext
+    type: io.kestra.plugin.gcp.bigquery.Query
+    sql: |
+      CREATE OR REPLACE EXTERNAL TABLE `{{kv('GCP_PROJECT_ID')}}.{{render(vars.table)}}_ext`
+      OPTIONS (
+          format = 'CSV',
+          uris = ['{{render(vars.gcs_file)}}']
+      );
+
+  - id: bq_disaster_table_tmp
+    type: io.kestra.plugin.gcp.bigquery.Query
+    sql: |
+      CREATE OR REPLACE TABLE `{{kv('GCP_PROJECT_ID')}}.{{render(vars.table)}}`
+      AS
+      SELECT
+        DisNo_ AS id_disaster,
+        Reconstruction_Costs___000_US__ AS reconstruction_costs_usd,
+        Reconstruction_Costs__Adjusted___000_US__ AS reconstruction_costs_adjusted_usd,
+        Insured_Damage___000_US__ AS insured_damage_usd,
+        Insured_Damage__Adjusted___000_US__ AS insured_damage_adjusted_usd,
+        Total_Damage___000_US__ AS total_damage_usd,
+        Total_Damage__Adjusted___000_US__ AS total_damage_adjusted_usd,
+        AID_Contribution___000_US__ AS aid_contribution_usd,
+        * EXCEPT(
+            DisNo_, Reconstruction_Costs___000_US__, Reconstruction_Costs__Adjusted___000_US__,
+            Insured_Damage___000_US__, Insured_Damage__Adjusted___000_US__,
+            Total_Damage___000_US__, Total_Damage__Adjusted___000_US__, AID_Contribution___000_US__
+        )
+      FROM `{{kv('GCP_PROJECT_ID')}}.{{render(vars.table)}}_ext`;
+
+  - id: bq_partitioned_cluster_disaster_data
+    type: io.kestra.plugin.gcp.bigquery.Query
+    sql: |
+      CREATE TABLE IF NOT EXISTS `{{kv('GCP_PROJECT_ID')}}.{{kv('GCP_DATASET')}}.partitioned_cluster_disaster_data`
+      PARTITION BY RANGE_BUCKET(start_year, GENERATE_ARRAY(1900, EXTRACT(YEAR FROM CURRENT_DATE()), 1))
+      CLUSTER BY Country, Disaster_Type
+      AS 
+      SELECT * 
+      FROM `{{kv('GCP_PROJECT_ID')}}.{{render(vars.table)}}`
+      WHERE FALSE;
+
+  - id: bq_disaster_merge
+    type: io.kestra.plugin.gcp.bigquery.Query
+    sql: |
+      MERGE INTO `{{kv('GCP_PROJECT_ID')}}.{{kv('GCP_DATASET')}}.partitioned_cluster_disaster_data` T
+      USING `{{kv('GCP_PROJECT_ID')}}.{{render(vars.table)}}` S
+      ON T.id_disaster = S.id_disaster
+      WHEN NOT MATCHED THEN
+        INSERT ROW;
+
+  - id: purge_files
+    type: io.kestra.plugin.core.storage.PurgeCurrentExecutionFiles
+    description: To avoid cluttering your storage, we will remove the downloaded files
+
+pluginDefaults:
+  - type: io.kestra.plugin.gcp
+    values:
+      serviceAccount: "{{kv('GCP_CREDS')}}"
+      projectId: "{{kv('GCP_PROJECT_ID')}}"
+      location: "{{kv('GCP_LOCATION')}}"
+      bucket: "{{kv('GCP_BUCKET_NAME')}}"
+

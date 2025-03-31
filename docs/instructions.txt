@@ -1,0 +1,12 @@
+docker compose up -d
+
+python entrypoint.py
+
+cd terraform
+
+terraform init
+terraform plan
+terraform apply
+
+Run flow_04
+

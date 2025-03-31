@@ -1,0 +1,60 @@
+id: 01_gcp_gcs
+namespace: world_disaster
+description: |
+  Pipeline to download file and upload it to Google Cloud Storage
+  Data used here comes from: https://github.com/valeqm/World-Disaster-Pipeline/tree/main/data
+
+variables:
+  file: "public_emdat_incl_hist.xlsx"
+  csv_file: "public_emdat_incl_hist.csv"
+  gcs_file: "gs://{{kv('GCP_BUCKET_NAME')}}/public_emdat_incl_hist.csv"
+  table: "{{kv('GCP_DATASET')}}.disaster_data_{{trigger.date | date('yyyy_MM')}}"
+
+tasks:
+  - id: extract
+    type: io.kestra.plugin.scripts.shell.Commands
+    outputFiles:
+      - "{{vars.file}}"
+    taskRunner:
+      type: io.kestra.plugin.core.runner.Process
+    commands:
+      - wget -qO {{vars.file}} "https://github.com/valeqm/World-Disaster-Pipeline/raw/main/data/{{vars.file}}"
+
+  - id: convert_to_csv
+    type: io.kestra.plugin.scripts.python.Script
+    outputFiles:
+      - "{{vars.csv_file}}"
+    script: |
+      import subprocess
+      import sys
+
+      try:
+          import pandas as pd
+      except ImportError:
+          subprocess.run([sys.executable, "-m", "pip", "install", "pandas", "openpyxl"], check=True)
+          import pandas as pd
+
+      input_file = "{{outputs.extract.outputFiles[vars.file]}}"
+      output_file = "{{vars.csv_file}}"
+
+      df = pd.read_excel(input_file, engine="openpyxl")
+      df.to_csv(output_file, index=False)
+
+  - id: upload_to_gcs
+    type: io.kestra.plugin.gcp.gcs.Upload
+    from: "{{outputs.convert_to_csv.outputFiles[vars.csv_file]}}"
+    to: "{{vars.gcs_file}}"
+
+  - id: purge_files
+    type: io.kestra.plugin.core.storage.PurgeCurrentExecutionFiles
+    description: To avoid cluttering your storage, we will remove the downloaded files
+
+pluginDefaults:
+  - type: io.kestra.plugin.gcp
+    values:
+      serviceAccount: "{{kv('GCP_CREDS')}}"
+      projectId: "{{kv('GCP_PROJECT_ID')}}"
+      location: "{{kv('GCP_LOCATION')}}"
+      bucket: "{{kv('GCP_BUCKET_NAME')}}"
+
+

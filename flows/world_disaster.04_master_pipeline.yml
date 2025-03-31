@@ -1,0 +1,37 @@
+id: 04_master_pipeline
+namespace: world_disaster
+description: |
+  data used here comes from: https://github.com/valeqm/World-Disaster-Pipeline/tree/main/data
+
+tasks:
+  - id: run-flow-01-gcp
+    type: io.kestra.core.tasks.flows.Flow
+    namespace: world_disaster
+    flowId: 01_gcp_gcs
+
+  - id: run-flow-02-gcp
+    type: io.kestra.core.tasks.flows.Flow
+    namespace: world_disaster
+    flowId: 02_gcp_bq
+
+  - id: run-flow-03-dbt
+    type: io.kestra.core.tasks.flows.Flow
+    namespace: world_disaster
+    flowId: 03_gcp_dbt
+    inputs: {}
+
+
+pluginDefaults:
+  - type: io.kestra.plugin.gcp
+    values:
+      serviceAccount: "{{kv('GCP_CREDS')}}"
+      projectId: "{{kv('GCP_PROJECT_ID')}}"
+      location: "{{kv('GCP_LOCATION')}}"
+      bucket: "{{kv('GCP_BUCKET_NAME')}}"
+
+
+triggers:
+  - id: data_schedule
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 0 1 */2 *"
+    timezone: "America/Mexico_City"
