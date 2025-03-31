@@ -61,6 +61,13 @@ If `make` is not available, manually run the commands in order from:
    
    ![Execute master_pipeline](/docs/images/flow_04%20(2).png)
 
+This pipeline will:
+- Upload the file to **Google Cloud Storage**.
+- Create a **partitioned and clustered table** in **BigQuery**:
+  - **Partitioning by `start_year`**: Disaster data is often analyzed over time. Partitioning by year reduces the amount of data scanned in queries that filter by date, improving performance and lowering costs.
+  - **Clustering by `country` and `disaster_type`**: These fields are commonly used for filtering and aggregating disaster data. Clustering ensures that relevant records are stored together, making queries faster and more efficient.
+- Execute **transformations in dbt** to refine and prepare the data.
+
 ## 8. Create the Dashboard in Looker Studio
 1. Use the table **join_disaster** in BigQuery.
 2. Build your dashboard based on the transformed data.
