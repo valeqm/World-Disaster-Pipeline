@@ -38,6 +38,10 @@ Modify the following files with your project-specific values:
 - [`variables.tf`](/terraform/variables.tf)
 
 ## 6. Run the Makefile
+Before running the Makefile or executing the instructions, install the necessary Python libraries:
+```sh
+pip install os requests ruamel.yaml json dotenv
+```
 Execute the Makefile:
 ```sh
 make
