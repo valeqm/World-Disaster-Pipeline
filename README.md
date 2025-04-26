@@ -45,7 +45,7 @@ View the Looker Studio dashboard [here](https://lookerstudio.google.com/reportin
 
 To replicate this project, follow these [instructions](docs/Instructions.md).
 
-## 👤 Author  
+## Author  
 
 **Valeria Q.M** 
 
